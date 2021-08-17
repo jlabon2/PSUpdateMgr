@@ -5,16 +5,16 @@ A front end for the PSWindowsUpdate module that allows deployment to chosen comp
 <b>Usage</b>
 ![Alt text](web/PUM-Settings.png "Settings")
 Define the WSUS server, logging path, and computer groups to generate a list of clients to monitor.
----
+___
 ![Alt text](web/PUM-Overview.png "Overview")
 Shows a list of all selected WSUS clients and their state.
----
+___
 ![Alt text](web/PUM-Install.png "Install")
 Allows the immediate or scheduled install of updates, allowing automatic restarts (with repatching upo boot). 
----
+___
 ![Alt text](web/PUM-Logs.png "Logs")
 Displays all actions as logged. 
----
+___
 
 
 
