@@ -1,0 +1,786 @@
+﻿<Controls:MetroWindow
+    x:Class="UM2.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:UM2"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    Name="MainWin"
+    Title="UMON"
+    Width="1100"
+    Height="475"
+    MinWidth="1100"
+    MinHeight="475"
+    MaxWidth="2400"
+    MaxHeight="2400"
+    BorderThickness="4"
+    GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
+    NonActiveGlowBrush="{DynamicResource MahApps.Brushes.Border.NonActive}"
+    ResizeMode="CanResizeWithGrip"
+    mc:Ignorable="d">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.BlueGrey.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Steel.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="DefaultButton" BasedOn="{StaticResource MaterialDesignRaisedButton}" TargetType="Button">
+                <Style.Setters>
+                    <Setter Property="Background" Value="{StaticResource MahApps.Brushes.ThemeBackground}" />
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="BorderBrush" Value="{StaticResource MahApps.Brushes.ThemeForeground}" />
+                    <Setter Property="BorderThickness" Value=".5" />
+                </Style.Setters>
+            </Style>
+            <Style BasedOn="{StaticResource DefaultButton}" TargetType="Button" />
+            <Style x:Key="FieldBox" BasedOn="{StaticResource MahApps.Styles.TextBox}" TargetType="TextBox">
+                <Setter Property="Margin" Value="15" />
+                <Setter Property="Padding" Value="5,5,25,5" />
+                <Setter Property="Width" Value="300" />
+                <Setter Property="FontSize" Value="10" />
+                <Setter Property="BorderBrush" Value="{StaticResource MahApps.Brushes.ThemeForeground}" />
+                <Setter Property="BorderThickness" Value=".5" />
+                <Setter Property="Background" Value="{StaticResource MahApps.Brushes.ThemeBackground}" />
+                <Setter Property="CaretBrush" Value="WhiteSmoke" />
+                <Setter Property="TextWrapping" Value="NoWrap" />
+                <Setter Property="md:TextFieldAssist.UnderlineBrush" Value="{StaticResource MahApps.Brushes.ThemeForeground}" />
+                <Setter Property="VerticalScrollBarVisibility" Value="Disabled" />
+                <Setter Property="AcceptsReturn" Value="False" />
+                <Setter Property="AcceptsTab" Value="False" />
+
+            </Style>
+
+
+            <Style x:Key="StatusIcon" TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+                <Setter Property="ToolTip" Value="Unknown item validity" />
+                <Setter Property="Text" Value="" />
+                <Style.Triggers>
+                    <Trigger Property="Tag" Value="True">
+                        <Setter Property="Foreground" Value="LightGreen" />
+                        <Setter Property="ToolTip" Value="Item can be resolved" />
+                        <Setter Property="Text" Value="" />
+                    </Trigger>
+                    <Trigger Property="Tag" Value="False">
+                        <Setter Property="Foreground" Value="IndianRed" />
+                        <Setter Property="ToolTip" Value="Item could not be resolved" />
+                        <Setter Property="Text" Value="" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Controls:MetroWindow.RightWindowCommands>
+
+        <Controls:WindowCommands Name="headerControl" Margin="0,-2.5,0,0" HorizontalAlignment="Right" VerticalAlignment="Center" ShowLastSeparator="True">
+            <Button
+                Name="headerConfigUpdate"
+                Width="200"
+                Height="25"
+                Margin="0,0,-55,0"
+                Padding="0"
+                Cursor="Hand">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontFamily="Segoe UI" Text="SETTINGS" />
+                        <TextBlock Margin="5,3,0,0" FontFamily="Segoe MDL2 Assets" Text="" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+    <Grid Name="resultParentGrid">
+  <simpleChildWindow:ChildWindow
+                Name="actionConfigWindow"
+                Grid.Row="5"
+                Grid.RowSpan="5"
+                Margin="0,0,0,0"
+                AllowMove="True"
+                CloseByEscape="True"
+                EnableDropShadow="False"
+                IsOpen="False"
+                ShowCloseButton="True">
+
+                <StackPanel>
+                    <StackPanel Name="toolConfigPanel" Width="400" Height="330" Background="{StaticResource MahApps.Brushes.Accent3}" Visibility="Collapsed">
+                        <TextBlock Margin="17,2.5,0,-2.5" FontFamily="{StaticResource MahApps.Fonts.Family.Header}" FontSize="14" Text="WSUS Server" />
+                        <TextBlock Margin="17,2.5,0,-11" FontSize="10" Foreground="White" Text="Input WSUS host using hostname:port format (e.g. mywsus:8530)" />
+                        <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                            <TextBox Name="settingWSUS" Height="28" MaxLength="40" Style="{StaticResource FieldBox}" Text="{Binding Path=WSUSServer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock
+                                Name="toolServerStatus"
+                                Width="30"
+                                Height="30"
+                                Margin="-45,15,0,0"
+                                FontSize="14"
+                                Style="{StaticResource StatusIcon}" />
+                            <Button
+                                Name="checkServer"
+                                Width="25"
+                                Height="25"
+                                Content=""
+                                FontFamily="Segoe MDL2 Assets"
+                                ToolTip="Verify WSUS host connectivity and gather computer groups" />
+
+                        </StackPanel>
+                        <TextBlock Margin="17,-5,0,-2.5" FontFamily="{StaticResource MahApps.Fonts.Family.Header}" FontSize="14" Text="Logging Path" />
+                        <TextBlock Margin="17,2.5,0,-11" FontSize="10" Foreground="White" Text="Input valid network path for log storage (should be writable from all clients)" />
+                        <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                            <TextBox Name="settingLogPath" Height="28" MaxLength="256" Style="{StaticResource FieldBox}" Text="{Binding Path=LoggingPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock
+                                Name="toolLoggingStatus"
+                                Width="30"
+                                Height="30"
+                                Margin="-45,15,0,0"
+                                FontSize="14"
+                                Style="{StaticResource StatusIcon}" />
+                            <Button
+                                Name="checkLogging"
+                                Width="25"
+                                Height="25"
+                                Content=""
+                                FontFamily="Segoe MDL2 Assets"
+                                ToolTip="Verify logging path" />
+
+                        </StackPanel>
+                        <StackPanel>
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="IsEnabled" Value="False" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=toolServerStatus, Path=Tag}" Value="True">
+                                            <Setter Property="IsEnabled" Value="True" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                            <TextBlock Margin="17,-5,0,-2.5" FontFamily="{StaticResource MahApps.Fonts.Family.Header}" FontSize="14" Text="WSUS Computer Groups" />
+                            <TextBlock Margin="17,2.5,0,0" FontSize="10" Foreground="White" Text="Select WSUS groups generated from validating WSUS host above" />
+                            <ListBox
+                                Name="toolComputerListTypes"
+                                Height="80"
+                                Margin="15,5,15,0"
+                                Background="{StaticResource MahApps.Brushes.ThemeBackground}"
+                                BorderBrush="{StaticResource MahApps.Brushes.ThemeForeground}"
+                                BorderThickness=".5"
+                                ItemsSource="{Binding ComputerGroups, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                SelectionMode="Multiple"
+                                Style="{StaticResource MaterialDesignListBox}" />
+                        </StackPanel>
+                        <StackPanel Margin="0,12.5,0,0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal">
+                            <Button
+                                Name="toolSave"
+                                Width="75"
+                                Height="40"
+                                Margin="0,0,15,0"
+                                Content="SAVE/RELAUNCH"
+                                FontFamily="{StaticResource MahApps.Fonts.Family.Button}"
+                                FontSize="8"
+                                ToolTip="Save config and relaunch tool">
+                                <Button.Style>
+                                    <Style BasedOn="{StaticResource DefaultButton}" TargetType="Button">
+                                        <Setter Property="IsEnabled" Value="False" />
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ElementName=toolServerStatus, Path=Tag}" Value="True" />
+                                                    <Condition Binding="{Binding ElementName=toolLoggingStatus, Path=Tag}" Value="True" />
+                                                </MultiDataTrigger.Conditions>
+                                                <MultiDataTrigger.Setters>
+                                                    <Setter Property="IsEnabled" Value="True" />
+                                                </MultiDataTrigger.Setters>
+                                            </MultiDataTrigger>
+                                            <DataTrigger Binding="{Binding ElementName=toolComputerListTypes, Path=SelectedItems.Count}" Value="0">
+                                                <Setter Property="IsEnabled" Value="False" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <Button
+                                Name="toolCancel"
+                                Width="75"
+                                Height="40"
+                                Margin="15,0,0,0"
+                                Content="CANCEL"
+                                FontFamily="{StaticResource MahApps.Fonts.Family.Button}"
+                                FontSize="8"
+                                ToolTip="Cancel config update" />
+
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Name="UpdateConfigPanel" Width="400" Height="250" Background="{StaticResource MahApps.Brushes.Accent3}" Visibility="Collapsed">
+                        <Label Name="updateSwitch" Visibility="Collapsed" />
+                        <Label Name="installWinHeader" HorizontalAlignment="Center" Content="" FontFamily="{StaticResource MahApps.Fonts.Family.Header}" FontSize="14" />
+                        <StackPanel Margin="25,0,25,0" Orientation="Horizontal">
+                            <StackPanel>
+                                <Controls:ToggleSwitch Name="updateDelayToggle" IsOn="False" OffContent="Install now" OnContent="Schedule install" />
+                                <DatePicker Name="installScheduleDate" DisplayDateStart="{x:Static sys:DateTime.Today}" FontSize="12" Text="{Binding Source={x:Static sys:DateTime.Today}, StringFormat=\{0:MM.dd.yyyy\}}">
+                                    <DatePicker.Style>
+                                        <Style BasedOn="{StaticResource MaterialDesignFloatingHintDatePicker}" TargetType="DatePicker">
+                                            <Setter Property="IsEnabled" Value="False" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=updateDelayToggle, Path=IsOn, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                                    <Setter Property="IsEnabled" Value="True" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=updateDelayToggle, Path=IsOn, UpdateSourceTrigger=PropertyChanged}" Value="False">
+                                                    <Setter Property="IsEnabled" Value="False" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DatePicker.Style>
+                                </DatePicker>
+                                <md:TimePicker Name="installScheduleTime" FontSize="12" Text="12:00">
+                                    <md:TimePicker.Style>
+                                        <Style TargetType="md:TimePicker">
+                                            <Setter Property="IsEnabled" Value="False" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=updateDelayToggle, Path=IsOn, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                                    <Setter Property="IsEnabled" Value="True" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=updateDelayToggle, Path=IsOn, UpdateSourceTrigger=PropertyChanged}" Value="False">
+                                                    <Setter Property="IsEnabled" Value="False" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </md:TimePicker.Style>
+                                </md:TimePicker>
+                            </StackPanel>
+                            <StackPanel Margin="50,0,0,0">
+                                <Controls:ToggleSwitch Name="updateRebootToggle" IsOn="False" OffContent="Do not reboot" OnContent="Auto reboot" />
+                                <Controls:ToggleSwitch Name="updateForceStart" IsOn="False" OffContent="Do not force" OnContent="Force" />
+                                <Controls:ToggleSwitch Name="updaterRerun" IsOn="False" OffContent="Do not rerun">
+                                    <Controls:ToggleSwitch.OnContent>
+                                        <TextBlock FontSize="14" Text="Rerun on boot" />
+                                    </Controls:ToggleSwitch.OnContent>
+                                </Controls:ToggleSwitch>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Margin="0,35,0,0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal">
+                            <Button
+                                Name="updateStart"
+                                Width="75"
+                                Height="50"
+                                Margin="0,0,15,0"
+                                Content="START"
+                                FontFamily="{StaticResource MahApps.Fonts.Family.Button}"
+                                FontSize="11" />
+                            <Button
+                                Name="updateCancel"
+                                Width="75"
+                                Height="50"
+                                Margin="15,0,0,0"
+                                Content="CANCEL"
+                                FontFamily="{StaticResource MahApps.Fonts.Family.Button}"
+                                FontSize="11" />
+
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Name="abortConfigPanel" Width="400" Height="200" Background="{StaticResource MahApps.Brushes.Accent3}" Visibility="Collapsed">
+
+
+
+                        <Label Name="abortWinHeader" HorizontalAlignment="Center" Content="" FontFamily="{StaticResource MahApps.Fonts.Family.Header}" FontSize="14" />
+                        <StackPanel Margin="0,30,0,0">
+                            <Controls:ToggleSwitch Name="abortScheduledToggle" HorizontalAlignment="Center" IsOn="True" OffContent="Exclude scheduled" OnContent="Include scheduled" />
+                        </StackPanel>
+                        <StackPanel Margin="0,35,0,0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal">
+                            <Button
+                                Name="abortStart"
+                                Width="75"
+                                Height="50"
+                                Margin="0,0,15,0"
+                                Content="START"
+                                FontFamily="{StaticResource MahApps.Fonts.Family.Button}"
+                                FontSize="11" />
+                            <Button
+                                Name="abortCancel"
+                                Width="75"
+                                Height="50"
+                                Margin="15,0,0,0"
+                                Content="CANCEL"
+                                FontFamily="{StaticResource MahApps.Fonts.Family.Button}"
+                                FontSize="11" />
+
+                        </StackPanel>
+
+                    </StackPanel>
+                    <StackPanel Name="rebootConfigPanel" Width="400" Height="200" Background="{StaticResource MahApps.Brushes.Accent3}" Visibility="Collapsed">
+                        <Label Name="rebootWinHeader" HorizontalAlignment="Center" Content="" FontFamily="{StaticResource MahApps.Fonts.Family.Header}" FontSize="14" />
+                        <StackPanel Margin="0,30,0,0">
+                            <Controls:ToggleSwitch Name="rebootForceToggle" HorizontalAlignment="Center" IsOn="False" OffContent="Reboot only if needed" OnContent="Force reboot" />
+                        </StackPanel>
+                        <StackPanel Margin="0,35,0,0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal">
+                            <Button
+                                Name="rebootStart"
+                                Width="75"
+                                Height="50"
+                                Margin="0,0,15,0"
+                                Content="START"
+                                FontFamily="{StaticResource MahApps.Fonts.Family.Button}"
+                                FontSize="11" />
+                            <Button
+                                Name="rebootCancel"
+                                Width="75"
+                                Height="50"
+                                Margin="15,0,0,0"
+                                Content="CANCEL"
+                                FontFamily="{StaticResource MahApps.Fonts.Family.Button}"
+                                FontSize="11" />
+
+                        </StackPanel>
+
+                    </StackPanel>
+                </StackPanel>
+                <simpleChildWindow:ChildWindow.OverlayBrush>
+                    <SolidColorBrush Opacity=".8" Color="Transparent" />
+                </simpleChildWindow:ChildWindow.OverlayBrush>
+            </simpleChildWindow:ChildWindow>
+            <simpleChildWindow:ChildWindow
+                x:Name="logWindow"
+                Title="Logs"
+                Grid.Row="1"
+                Grid.RowSpan="1"
+                Width="720"
+                Margin="0,45,0,85"
+                VerticalContentAlignment="Stretch"
+                CloseByEscape="True"
+                IsOpen="False"
+                ShowCloseButton="True">
+                <Grid>
+                    <TextBox
+                        x:Name="logText"
+                        Grid.Row="0"
+                        Width="696"
+                        Padding="10"
+                        HorizontalAlignment="Stretch"
+                        AcceptsReturn="True"
+                        Background="{StaticResource MahApps.Brushes.Accent3}"
+                        BorderThickness="0"
+                        FontFamily="Consolas"
+                        FontSize="14"
+                        Foreground="White"
+                        HorizontalScrollBarVisibility="Disabled"
+                        IsReadOnly="True"
+                        TextWrapping="Wrap"
+                        VerticalScrollBarVisibility="Visible">
+                        <TextBox.Resources>
+                            <Style BasedOn="{StaticResource MaterialDesignScrollBarMinimal}" TargetType="{x:Type ScrollBar}" />
+                        </TextBox.Resources>
+                    </TextBox>
+                </Grid>
+                <simpleChildWindow:ChildWindow.OverlayBrush>
+                    <SolidColorBrush Opacity=".8" Color="Transparent" />
+                </simpleChildWindow:ChildWindow.OverlayBrush>
+            </simpleChildWindow:ChildWindow>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MaxWidth="3500" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="*" MaxHeight="3000" />
+            </Grid.RowDefinitions>
+
+          
+            <DataGrid
+                x:Name="resultsGrid"
+                Grid.Row="1"
+                MaxWidth="{Binding ElementName=MainWin, Path=ActualWidth}"
+                Margin="50,10,50,75"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                AutoGenerateColumns="False"
+                BorderBrush="{StaticResource MahApps.Brushes.Accent}"
+                BorderThickness="1.5"
+                CanUserAddRows="False"
+                ColumnHeaderStyle="{StaticResource MahApps.Styles.DataGridColumnHeader}"
+                EnableColumnVirtualization="True"
+                EnableRowVirtualization="True"
+                FontFamily="{StaticResource MahApps.Fonts.Family.Header}"
+                HorizontalScrollBarVisibility="Hidden"
+                IsReadOnly="True"
+                ItemsSource="{Binding Mode=OneWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"
+                RowStyle="{StaticResource MahApps.Styles.DataGridRow}"
+                VerticalScrollBarVisibility="Auto">
+                <DataGrid.Style>
+                    <Style BasedOn="{StaticResource MahApps.Styles.DataGrid}" TargetType="DataGrid">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <Trigger Property="HasItems" Value="True">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Style>
+                <DataGrid.Resources>
+                    <Style BasedOn="{StaticResource MahApps.Styles.DataGridCell}" TargetType="DataGridCell">
+                        <Setter Property="Padding" Value="1,2,1,2" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="*" MinWidth="230" MaxWidth="532" Binding="{Binding ComputerName}" Header="Computer Name" />
+                    <DataGridTextColumn Width="*" MinWidth="200" MaxWidth="580" Binding="{Binding OS}" Header="OS" />
+
+
+                    <DataGridTemplateColumn MinWidth="160" MaxWidth="200" Header="Last Sync" SortMemberPath="LastSyncTime">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Tag="{Binding DiffTag}" Text="{Binding LastSyncDiff}" ToolTip="{Binding LastSyncTime}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="White" />
+                                            <Style.Triggers>
+                                                <Trigger Property="Tag" Value="8">
+                                                    <Setter Property="Foreground" Value="IndianRed" />
+                                                </Trigger>
+                                                <Trigger Property="Tag" Value="7">
+                                                    <Setter Property="Foreground" Value="#D88080" />
+                                                </Trigger>
+                                                <Trigger Property="Tag" Value="6">
+                                                    <Setter Property="Foreground" Value="#E9B7B7" />
+                                                </Trigger>
+                                                <Trigger Property="Tag" Value="5">
+                                                    <Setter Property="Foreground" Value="#F4DBDB" />
+                                                </Trigger>
+                                                <Trigger Property="Tag" Value="4">
+                                                    <Setter Property="Foreground" Value="#F9EDED" />
+                                                </Trigger>
+
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Width="*" MinWidth="75" MaxWidth="75" Binding="{Binding UpdatesNeeded}" Header="Updates" />
+                    <DataGridTemplateColumn MinWidth="75" MaxWidth="75" Header="Online" SortMemberPath="Connectivity">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Tag="{Binding Connectivity}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Center" />
+                                            <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+                                            <Setter Property="ToolTip" Value="System awaiting connectivity check" />
+                                            <Setter Property="Text" Value="" />
+                                            <Style.Triggers>
+                                                <Trigger Property="Tag" Value="True">
+                                                    <Setter Property="Foreground" Value="LightGreen" />
+                                                    <Setter Property="ToolTip" Value="System is online" />
+                                                    <Setter Property="Text" Value="" />
+                                                </Trigger>
+                                                <Trigger Property="Tag" Value="False">
+                                                    <Setter Property="Foreground" Value="IndianRed" />
+                                                    <Setter Property="ToolTip" Value="System is offline" />
+                                                    <Setter Property="Text" Value="" />
+                                                </Trigger>
+
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn MinWidth="75" MaxWidth="75" Header="Reboot" SortMemberPath="RebootNeeded">
+
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Tag="{Binding RebootNeeded}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="LightGreen" />
+                                            <Setter Property="Text" Value="" />
+                                            <Setter Property="HorizontalAlignment" Value="Center" />
+                                            <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+                                            <Setter Property="ToolTip" Value="System does not require a reboot" />
+                                            <Style.Triggers>
+                                                <Trigger Property="Tag" Value="True">
+                                                    <Setter Property="Foreground" Value="IndianRed" />
+                                                    <Setter Property="Text" Value="" />
+                                                    <Setter Property="ToolTip" Value="System requires a reboot" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Width="*" MinWidth="120" MaxWidth="300" Binding="{Binding Updater}" Header="Updater" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <TextBlock
+                x:Name="missingText"
+                Grid.Row="1"
+                Margin="0,10,0,0"
+                HorizontalAlignment="Center"
+                FontFamily="{StaticResource MahApps.Fonts.Family.Header}"
+                FontSize="18"
+                Text="No results based on filtered criteria">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=resultsGrid, Path=HasItems}" Value="True">
+                                <Setter Property="Visibility" Value="Hidden" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="*" MaxWidth="2400" />
+                    <ColumnDefinition Width="50" />
+                </Grid.ColumnDefinitions>
+                <DockPanel Grid.Column="1" HorizontalAlignment="Left" Background="Transparent">
+                    <TextBox
+                        Name="filterTextBox"
+                        Width="200"
+                        Height="26"
+                        Margin="0,15,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Panel.ZIndex="0"
+                        Controls:TextBoxHelper.Watermark="Search"
+                        BorderBrush="{StaticResource MahApps.Brushes.ThemeForeground}"
+                        BorderThickness=".5" />
+                    <StackPanel Name="initialUpdatePanel" Margin="40,9,0,0">
+                        <Label Name="initialUpdate" Content="Old history loaded. Updating..." FontFamily="{StaticResource MahApps.Fonts.Family.Control}" />
+                        <ProgressBar Margin="0,-4,0,0" IsIndeterminate="True" />
+                    </StackPanel>
+                </DockPanel>
+                <Button
+                    Name="clearButton"
+                    Width="19"
+                    Height="19"
+                    Margin="0,18.5,-197.0,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    BorderThickness="0"
+                    Content=""
+                    FontFamily="Segoe MDL2 Assets"
+                    Style="{StaticResource MahApps.Styles.Button.Circle}" />
+                <DockPanel Grid.Column="1" HorizontalAlignment="Right">
+                    <ComboBox
+                        x:Name="filterSelection"
+                        Width="200"
+                        Height="26"
+                        Margin="0,5,0,0"
+                        BorderBrush="{StaticResource MahApps.Brushes.ThemeForeground}"
+                        BorderThickness=".5"
+                        SelectedIndex="0">
+                        <ComboBoxItem>All Items</ComboBoxItem>
+                        <ComboBoxItem>Needs Updates</ComboBoxItem>
+                        <ComboBoxItem>Needs Reboot</ComboBoxItem>
+                    </ComboBox>
+                    <Button
+                        x:Name="buttonSelectAll"
+                        Grid.Column="2"
+                        Width="35"
+                        Height="35"
+                        Margin="10,5,0,0"
+                        Content=""
+                        FontFamily="Segoe MDL2 Assets"
+                        FontSize="22"
+                        ToolTip="Select all visible items" />
+                    <Button
+                        x:Name="buttonUnselectAll"
+                        Grid.Column="2"
+                        Width="35"
+                        Height="35"
+                        Margin="10,5,0,0"
+                        Content=""
+                        FontFamily="Segoe MDL2 Assets"
+                        FontSize="22"
+                        ToolTip="Unselect all visible items" />
+                </DockPanel>
+            </Grid>
+        </Grid>
+        <Controls:Flyout Name="flyOut" Height="60" Background="{StaticResource MahApps.Brushes.Accent2}" IsOpen="False" Position="Bottom">
+            <Grid Name="selectionGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="340" />
+                    <ColumnDefinition Width="*" MaxWidth="2400" />
+                    <ColumnDefinition Width="50" />
+                </Grid.ColumnDefinitions>
+                <DockPanel>
+                    <Label Name="selectionLabel" Margin="5,15,0,0" FontFamily="{StaticResource MahApps.Fonts.Family.Header}" FontSize="18" FontWeight="Bold" />
+                    <Label
+                        Name="selectionCountLabel"
+                        Margin="0,15,0,0"
+                        FontFamily="{StaticResource MahApps.Fonts.Family.Header}"
+                        FontSize="18"
+                        FontWeight="Bold"
+                        Foreground="AntiqueWhite" />
+                </DockPanel>
+                <DockPanel Name="logPanel" Grid.Column="1" HorizontalAlignment="Right">
+                    <Controls:SplitButton
+                        Name="LogButton"
+                        Width="120"
+                        Height="40"
+                        Margin="5,0,0,0"
+                        BorderBrush="Gray"
+                        BorderThickness=".6"
+                        DisplayMemberPath="Date"
+                        FontFamily="{StaticResource MahApps.Fonts.Family.Button}"
+                        FontSize="12"
+                        SelectedIndex="0"
+                        ToolTip="Open log">
+                        <Controls:SplitButton.Icon>
+                            <Label HorizontalAlignment="Left" Content="" FontFamily="Segoe MDL2 Assets" FontSize="24" />
+                        </Controls:SplitButton.Icon>
+                    </Controls:SplitButton>
+                    <Button Name="installButton" Width="40" Height="40" Margin="10,0,0,0" ToolTip="Configure install on selected clients">
+                        <Grid Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Controls:ProgressRing Name="installButtonRing" Width="15" Height="10" Foreground="WhiteSmoke">
+                                <Controls:ProgressRing.Style>
+                                    <Style TargetType="Controls:ProgressRing">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=ToolTip}" Value="Configure install on selected clients">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Controls:ProgressRing.Style>
+                            </Controls:ProgressRing>
+                            <Label Name="installButtonLabel" Content="" FontFamily="Segoe MDL2 Assets" FontSize="30">
+                                <Label.Style>
+                                    <Style TargetType="Label">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=ToolTip}" Value="Configure install on selected clients">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                        </Grid>
+                    </Button>
+                    <Button Name="cancelInstallButton" Width="40" Height="40" Margin="10,0,0,0" ToolTip="Abort install on selected clients">
+                        <Grid Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Controls:ProgressRing Name="abortButtonRing" Width="15" Height="10" Foreground="WhiteSmoke">
+                                <Controls:ProgressRing.Style>
+                                    <Style TargetType="Controls:ProgressRing">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=ToolTip}" Value="Abort install on selected clients">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Controls:ProgressRing.Style>
+                            </Controls:ProgressRing>
+                            <Label Name="abortLabel" Content="" FontFamily="Segoe MDL2 Assets" FontSize="30">
+                                <Label.Style>
+                                    <Style TargetType="Label">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=ToolTip}" Value="Abort install on selected clients">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                        </Grid>
+                    </Button>
+                    <Button Name="checkInButton" Width="40" Height="40" Margin="10,0,0,0" ToolTip="Force check in on selected clients">
+                        <Grid Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Controls:ProgressRing Name="checkInButtonRing" Width="15" Height="10" Foreground="WhiteSmoke">
+                                <Controls:ProgressRing.Style>
+                                    <Style TargetType="Controls:ProgressRing">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=ToolTip}" Value="Force check in on selected clients">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Controls:ProgressRing.Style>
+                            </Controls:ProgressRing>
+                            <Label Name="checkInButtonLabel" Content="" FontFamily="Segoe MDL2 Assets" FontSize="30">
+                                <Label.Style>
+                                    <Style TargetType="Label">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=ToolTip}" Value="Force check in on selected clients">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                        </Grid>
+                    </Button>
+                    <Button Name="rebootButton" Width="40" Height="40" Margin="10,0,0,0" ToolTip="Reboot selected clients">
+
+                        <Grid Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Controls:ProgressRing Name="rebootButtonRing" Width="15" Height="10" Foreground="WhiteSmoke">
+                                <Controls:ProgressRing.Style>
+                                    <Style TargetType="Controls:ProgressRing">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=ToolTip}" Value="Reboot selected clients">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Controls:ProgressRing.Style>
+                            </Controls:ProgressRing>
+                            <Label Name="rebootLabel" Content="" FontFamily="Segoe MDL2 Assets" FontSize="30">
+                                <Label.Style>
+                                    <Style TargetType="Label">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=ToolTip}" Value="Reboot selected clients">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                        </Grid>
+                    </Button>
+                    <Button
+                        Name="mstscButton"
+                        Width="40"
+                        Height="40"
+                        Margin="10,0,0,0"
+                        FontFamily="Segoe MDL2 Assets"
+                        FontSize="30">
+                        <Button.Style>
+                            <Style BasedOn="{StaticResource DefaultButton}" TargetType="Button">
+                                <Setter Property="Content" Value="" />
+                                <Setter Property="ToolTip" Value="Connected via MSTSC" />
+                                <Style.Triggers>
+                                    <Trigger Property="Tag" Value="Multi">
+                                        <Setter Property="Content" Value="" />
+                                        <Setter Property="ToolTip" Value="Connect via RDCMan" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </DockPanel>
+            </Grid>
+        </Controls:Flyout>
+    </Grid>
+</Controls:MetroWindow>

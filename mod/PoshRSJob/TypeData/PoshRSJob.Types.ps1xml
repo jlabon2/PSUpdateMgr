@@ -1,0 +1,142 @@
+<Types>
+  <Type>
+    <Name>RSJob</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>HasMoreData</Name>
+        <GetScriptBlock>
+            $Flags = 'nonpublic','instance','static'
+            $State = $this.GetState()
+            If ($PSVersionTable['PSEdition'] -and $PSVersionTable.PSEdition -eq 'Core') {
+                $IsReceived =$This.IsReceived
+            }
+            Else {
+                $Field = $This.gettype().GetField('IsReceived',$Flags)
+                $IsReceived = $Field.GetValue($This)
+            }
+            If ($IsReceived) {
+                $False
+            }
+            Else {
+                If ($State -eq 'Completed' -AND $This.Handle.IsCompleted -AND (-Not $This.Completed)) {
+                    $Output = $This.Innerjob.GetType().GetProperty('OutputBuffer',$Flags)
+                    if ($null -eq $Output) {
+                        $False
+                    }
+                    else {
+                      $Results = $Output.GetValue($This.Innerjob)
+                      If ($Results -and $Results.Count) {
+                          $True
+                      }
+                      Else {
+                          $False
+                      }
+                    }
+                }
+                Else {
+                    If ($This.Output -and $This.Output.Count) {
+                        $True
+                    }
+                    Else {
+                        $False
+                    }
+                }
+            }
+        </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>RSJob</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>State</Name>
+        <GetScriptBlock>
+            $this.GetState()
+        </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>RSJob</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>HasErrors</Name>
+        <GetScriptBlock>
+         If ($psversiontable.psversion.major -ge 3){
+            $this.innerjob.HadErrors
+         }
+         Else {
+            ($this.innerjob.Streams.Error.Count -ne 0)
+         }
+        </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>RSJob</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>Verbose</Name>
+        <GetScriptBlock>
+          $this.InnerJob.Streams.Verbose
+        </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>RSJob</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>Debug</Name>
+        <GetScriptBlock>
+          $this.InnerJob.Streams.Debug
+        </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>RSJob</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>Warning</Name>
+        <GetScriptBlock>
+          $this.InnerJob.Streams.Warning
+        </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>RSJob</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>Progress</Name>
+        <GetScriptBlock>
+          $this.InnerJob.Streams.Progress
+        </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>RSRunspacePool</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>AvailableJobs</Name>
+        <GetScriptBlock>
+          $this.Runspacepool.GetAvailableRunspaces()
+        </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+  <Type>
+    <Name>RSRunspacePool</Name>
+    <Members>
+      <ScriptProperty>
+        <Name>State</Name>
+        <GetScriptBlock>
+          $this.RunspacePool.RunspacePoolStateInfo.State
+        </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+</Types>
