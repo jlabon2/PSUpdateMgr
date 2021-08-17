@@ -6,7 +6,7 @@ A front end for the PSWindowsUpdate module that allows deployment to chosen comp
 ![Alt text](web/PUM-Settings.png "Settings")
 Define the WSUS server, logging path, and computer groups to generate a list of clients to monitor.
 
-![Alt text](web/PUM-Overviews.png "Overview")
+![Alt text](web/PUM-Overview.png "Overview")
 Shows a list of all selected WSUS clients and their state.
 
 ![Alt text](web/PUM-Install.png "Install")
