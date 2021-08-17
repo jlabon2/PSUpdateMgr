@@ -16,7 +16,7 @@ ___
 Displays all actions as logged. 
 ___
 
-Allows for the ability to remotely start Windows updates on one or more clients at a time, while instant WSUS checks can also been initiated. Reboots can be initiated forcefully or as needed. Additionally, single clients can been remotely connected to using MSTSC or in bulk using RDCMan.
+Allows for the ability to remotely start Windows updates on one or more clients at a time, while instant WSUS check-ins can also been initiated. Reboots can be initiated forcefully or as needed. Additionally, single clients can been remotely connected to using MSTSC or in bulk using RDCMan.
 
 
 
