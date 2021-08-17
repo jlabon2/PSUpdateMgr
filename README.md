@@ -1,6 +1,6 @@
 # PSUpdateMgr - GUI for PSWindowsUpdate
 
-A front end for the PSWindowsUpdate module that allows deployment to chosen computer groups from a WSUS server. Fully multithreaded and supports logging and muti-client remote connections using RDCMan.
+A frontend for the PSWindowsUpdate module that allows patch deployment to chosen computer groups generated from a WSUS server. Fully multithreaded and supports logging and muti-client remote connections using RDCMan.
 
 <b>Usage</b>
 ![Alt text](web/PUM-Settings.png "Settings")
